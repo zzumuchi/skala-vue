@@ -92,5 +92,5 @@ git commit -m "feat(day1): Vue 반응성과 보간법 실습"
 
 ## GitHub
 
-- 저장소: GitHub 원격 저장소를 연결한 뒤 주소를 추가할 예정
+- 저장소: [https://github.com/zzumuchi/skala-vue](https://github.com/zzumuchi/skala-vue)
 - 배포 주소: 최종 배포 후 추가할 예정
