@@ -1,7 +1,6 @@
 # SKALA Vue.js 학습 프로젝트
 
 Vue.js 수업에서 배운 내용을 날짜별로 직접 구현하고 GitHub 커밋으로 기록하는 프로젝트입니다.
-`../skala-vue-answer`는 최종 정답지이며, 이 프로젝트는 수업 진도에 맞춰 스스로 작성하는 과제용 코드입니다.
 
 ## 기술 스택
 
@@ -77,20 +76,8 @@ skala-vue/
 └── README.md
 ```
 
-## 매일 기록하는 방법
-
-1. 당일 수업 범위의 코드를 구현합니다.
-2. 이 README의 일차별 기록에 학습 내용과 Customization을 추가합니다.
-3. `npm run lint`와 `npm run build`로 코드를 검사합니다.
-4. 변경 파일을 확인하고 날짜와 주제가 드러나는 메시지로 커밋합니다.
-
 ```sh
 git status
 git add src README.md
 git commit -m "feat(day1): Vue 반응성과 보간법 실습"
 ```
-
-## GitHub
-
-- 저장소: [https://github.com/zzumuchi/skala-vue](https://github.com/zzumuchi/skala-vue)
-- 배포 주소: 최종 배포 후 추가할 예정
