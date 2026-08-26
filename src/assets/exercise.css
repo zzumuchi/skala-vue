@@ -23,6 +23,10 @@ body,
   padding: 32px 24px;
 }
 
+.weather-app {
+  color: var(--vue-text);
+}
+
 .app-container {
   width: 100%;
   max-width: 760px;
@@ -81,14 +85,17 @@ body,
 }
 
 .search-box h3,
-.list-box h3 {
+.list-box h3,
+.search-inner h3,
+.weather-list-box > h3 {
   margin: 0 0 14px;
   color: var(--vue-navy);
   font-size: 1.05rem;
   font-weight: 650;
 }
 
-.search-box input {
+.search-box input,
+.search-inner input {
   width: 100%;
   padding: 9px 11px;
   color: var(--vue-text);
@@ -102,9 +109,19 @@ body,
     box-shadow 0.2s ease;
 }
 
-.search-box input:focus {
+.search-box input:focus,
+.search-inner input:focus {
   border-color: var(--vue-green);
   box-shadow: 0 0 0 3px rgba(66, 184, 131, 0.14);
+}
+
+.search-inner p {
+  margin: 10px 0 0;
+  color: var(--vue-text-soft);
+}
+
+.search-inner strong {
+  color: var(--vue-text);
 }
 
 .weather-card {
