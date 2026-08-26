@@ -13,6 +13,12 @@ import WatchersRefArray from './components/practices/2_composition/2_Computed-Wa
 import WatchersReactiveArray from './components/practices/2_composition/2_Computed-Watchers/WatchersReactiveArray.vue';
 import WatchersWatchEffect from './components/practices/2_composition/2_Computed-Watchers/WatchersWatchEffect.vue';
 
+// 3. Component LifeStyle
+import LifecycleParent from './components/practices/2_composition/3_Lifecycle/LifecycleParent.vue';
+
+// 4. Props & Emits
+import PropsEmitsParent from './components/practices/2_composition/4_PropsEmits/PropsEmitsParent.vue';
+
 </script>
 
 <template>
@@ -32,6 +38,14 @@ import WatchersWatchEffect from './components/practices/2_composition/2_Computed
     <WatchersRefArray />
     <WatchersReactiveArray />
     <WatchersWatchEffect />
+
+    <h1>3. Component Lifecycle</h1>
+    <hr />
+    <LifecycleParent />
+
+    <h1>4. Props & Emits</h1>
+    <hr />
+    <PropsEmitsParent />
   </div>
 </template>
 
