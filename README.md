@@ -264,7 +264,10 @@ npm run build
 - Vue Component 분리
 - Props와 Emits를 이용한 컴포넌트 통신
 - Default Slot을 이용한 콘텐츠 주입
+- Vue Router와 지연 로딩
+- 동적 경로, Query String, Catch-all Route
 - Exercise 3: Weather Component
+- Exercise 4: Weather Router
 
 #### Exercise 3: Weather Component
 
@@ -282,8 +285,26 @@ npm run build
 - `activity`와 `preparation` Props로 추천 정보를 전달
 - 날씨 카드 목록을 데스크톱 2열, 모바일 1열의 반응형 Grid로 구성
 
+#### Exercise 4: Weather Router
+
+- `RouterLink`와 `RouterView`를 이용해 날씨 앱의 화면 전환 구조 구성
+- 홈, 서비스 소개, 도시 상세 View를 지연 로딩 방식으로 라우터에 등록
+- `/weather/:cityId` 동적 경로의 도시 ID로 상세 Mock Data 조회
+- 검색어를 Query String과 동기화해 URL에 검색 상태 유지
+- 정의되지 않은 주소는 Catch-all Route를 통해 `NotFoundView.vue`로 이동
+- 상세보기 버튼의 알림을 제거하고 `router.push()`를 이용한 상세 페이지 이동으로 변경
+
+#### Weather Router Customization
+
+- `WeatherGuideView.vue`를 추가하고 `/guide` 경로로 Routing
+- 맑음, 비, 구름 상태별 추천 활동과 준비물 안내
+- Navigation Bar에 외출 준비 가이드 메뉴 추가
+- 기존 개인화 도시인 판교를 홈과 상세 Mock Data에 유지
+- 가이드 카드는 데스크톱 3열, 모바일 1열의 반응형 Grid로 구성
+
 #### 실행 및 검사 결과
 
 - `src/main.js`에서 `App_exercise.vue`를 실행 대상으로 설정
+- 홈, 외출 준비 가이드, 도시 상세, Catch-all 경로 응답 확인
 - `npm run lint` 통과
 - `npm run build` 통과
