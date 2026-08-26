@@ -3,7 +3,7 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-import App from './App2_composition.vue'
+import App from './App_exercise.vue'
 import router from './router'
 
 const app = createApp(App)

@@ -39,7 +39,7 @@ import App from './App2_composition.vue'
 import App from './App_exercise.vue'
 ```
 
-한 번에 하나의 App만 import해서 실행합니다. 현재 기본 실행 대상은 `App2_composition.vue`입니다.
+한 번에 하나의 App만 import해서 실행합니다. 현재 기본 실행 대상은 `App_exercise.vue`입니다.
 
 ## 코드 검사
 
@@ -256,3 +256,34 @@ npm run build
   - Git은 파일 이동 명령보다 변경 전후의 파일 내용을 기준으로 이동 여부를 판단한다.
   - `git status`로 변경 범위를 먼저 확인하고 과제와 관련된 파일만 선택해 스테이징했다.
   - 폴더를 재구성할 때는 import 경로와 Git 상태를 함께 확인해야 한다는 점을 배웠다.
+
+### Day 3 — 2026-08-26
+
+#### 학습 주제
+
+- Vue Component 분리
+- Props와 Emits를 이용한 컴포넌트 통신
+- Default Slot을 이용한 콘텐츠 주입
+- Exercise 3: Weather Component
+
+#### Exercise 3: Weather Component
+
+- 기존 날씨 기능을 `WeatherParent`, `BaseDashboardCard`, `SearchBar`, `WeatherCard` 컴포넌트로 분리
+- `BaseDashboardCard`의 Default Slot으로 검색 영역과 날씨 목록 주입
+- Props로 검색어와 도시 객체를 자식 컴포넌트에 전달
+- Emits로 검색어 변경, 카드 선택, 상세보기 이벤트를 부모 컴포넌트에 전달
+- 각 컴포넌트의 디자인을 `<style scoped>`로 분리
+
+#### Weather Component Customization
+
+- Mockup에서 추가한 도시별 추천 활동과 준비물 정보를 컴포넌트 과제에 유지
+- 판교 날씨와 ‘카페에서 코딩하기’, ‘노트북’ 데이터 유지
+- 추천 정보를 담당하는 `WeatherActivity.vue`를 추가하고 `WeatherCard`의 자식 컴포넌트로 구성
+- `activity`와 `preparation` Props로 추천 정보를 전달
+- 날씨 카드 목록을 데스크톱 2열, 모바일 1열의 반응형 Grid로 구성
+
+#### 실행 및 검사 결과
+
+- `src/main.js`에서 `App_exercise.vue`를 실행 대상으로 설정
+- `npm run lint` 통과
+- `npm run build` 통과

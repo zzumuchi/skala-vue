@@ -66,6 +66,20 @@ body,
   border-radius: 8px;
 }
 
+.list-box,
+.weather-list-box {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.list-box > h3,
+.weather-list-box > h3,
+.list-box > .empty-message,
+.weather-list-box > .empty-message {
+  grid-column: 1 / -1;
+}
+
 .search-box h3,
 .list-box h3 {
   margin: 0 0 14px;
@@ -95,7 +109,7 @@ body,
 
 .weather-card {
   position: relative;
-  margin-bottom: 12px;
+  margin-bottom: 0;
   padding: 18px;
   background: #ffffff;
   border: 1px solid var(--vue-border);
@@ -202,6 +216,13 @@ body,
   font-weight: 650;
 }
 
+.empty-message {
+  margin: 0;
+  padding: 10px 0;
+  color: #e74c3c;
+  text-align: center;
+}
+
 .navigation-bar {
   display: flex;
   align-items: center;
@@ -236,6 +257,11 @@ body,
 
   .app-container {
     padding: 20px;
+  }
+
+  .list-box,
+  .weather-list-box {
+    grid-template-columns: 1fr;
   }
 
   .weather-card {
