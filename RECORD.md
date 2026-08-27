@@ -419,6 +419,7 @@ npm run build
 - 로컬 브라우저에서 서울과 제주 지도 지점 선택 시 추천 패널 변경 확인
 - 새로 추가한 제주 상세 경로에서 현재 날씨, 추천 활동·옷차림, 5일 예보와 대기질 표시 확인
 - 390px 모바일 화면에서 지도와 추천 패널의 1열 배치 및 가로 넘침 없음 확인
-- GitHub 자동 배포 연결은 Vercel GitHub App의 저장소 접근 권한 부족으로 보류하고 CLI Production 배포로 완료
+- 최초 GitHub 자동 배포 연결은 Vercel GitHub App의 저장소 접근 권한 부족으로 보류했으나, 저장소 권한을 추가한 뒤 `skala-vue-p070` 프로젝트와 연결 완료
+- GitHub `main` Branch Push를 기준으로 Vercel Production 자동 배포가 실행되도록 설정
 - `npm run lint` 통과
 - `npm run build` 통과

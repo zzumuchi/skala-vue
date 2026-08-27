@@ -168,7 +168,7 @@ OPENWEATHER_API_KEY=your_openweathermap_api_key
 - Production Bundle 내 OpenWeather API Key 미포함 확인
 - `dist/`, `.env.local`, `.vercel/`, `node_modules/` Git 제외
 
-Vercel CLI를 이용해 Production으로 배포했습니다. GitHub Push 기반 자동 배포는 Vercel GitHub App에 저장소 접근 권한을 부여한 후 연결할 수 있습니다. 도메인은 추후 Vercel Project의 Settings > Domains에서 변경하거나 추가할 수 있습니다.
+Vercel CLI를 이용해 Production 배포를 완료한 뒤 GitHub 저장소를 Vercel 프로젝트에 연결했습니다. 이후 `main` Branch에 Push하면 Production 배포가 자동으로 진행됩니다. 도메인은 추후 Vercel Project의 Settings > Domains에서 변경하거나 추가할 수 있습니다.
 
 ## 개발 과정
 
