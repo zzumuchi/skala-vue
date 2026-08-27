@@ -126,7 +126,7 @@ body,
   cursor: not-allowed;
 }
 
-.practice-container input,
+.practice-container input:not(.el-input__inner),
 .practice-container select,
 .practice-container textarea {
   max-width: 100%;
@@ -142,7 +142,7 @@ body,
     box-shadow 0.2s ease;
 }
 
-.practice-container input:focus,
+.practice-container input:not(.el-input__inner):focus,
 .practice-container select:focus,
 .practice-container textarea:focus {
   border-color: var(--vue-green);

@@ -77,6 +77,23 @@ body,
   gap: 12px;
 }
 
+/* Element Plus 카드 내부에서 날씨 카드를 한 줄에 하나씩 표시한다. */
+.weather-list-box {
+  display: block;
+}
+
+.weather-list-box > .el-card__body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.weather-list-box > .el-card__body > h3,
+.weather-list-box > .el-card__body > .empty-message,
+.weather-list-box > .el-card__body > .loading-message {
+  grid-column: 1 / -1;
+}
+
 .list-box > h3,
 .weather-list-box > h3,
 .list-box > .empty-message,
@@ -95,7 +112,7 @@ body,
 }
 
 .search-box input,
-.search-inner input {
+.search-inner input:not(.el-input__inner) {
   width: 100%;
   padding: 9px 11px;
   color: var(--vue-text);
@@ -110,9 +127,13 @@ body,
 }
 
 .search-box input:focus,
-.search-inner input:focus {
+.search-inner input:not(.el-input__inner):focus {
   border-color: var(--vue-green);
   box-shadow: 0 0 0 3px rgba(66, 184, 131, 0.14);
+}
+
+.search-inner .el-input {
+  width: 100%;
 }
 
 .search-inner p {

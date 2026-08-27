@@ -12,26 +12,28 @@ const handleGoHome = () => {
     <h3>서비스 소개</h3>
     <hr />
 
-    <div class="description-box">
+    <el-card class="description-box" shadow="never">
       <p>본 앱은 <strong>Vue 3</strong> 및 <strong>Vue Router 4</strong> 기반으로 제작된 실습용 기상 관측 대시보드입니다.</p>
       <ul>
         <li><code>components/exercise/3_Component/</code> 폴더 내부의 독립 부품 연동</li>
         <li>클라이언트 사이드 라우팅을 통한 새로고침 없는 화면 전환</li>
         <li>URL 쿼리 스트링 매핑을 활용한 실시간 검색 상태 동기화</li>
       </ul>
-    </div>
+    </el-card>
 
-    <button class="home-btn" @click="handleGoHome">대시보드 홈으로 이동</button>
+    <el-button class="home-btn" type="primary" @click="handleGoHome">대시보드 홈으로 이동</el-button>
   </div>
 </template>
 
 <style scoped>
 .description-box {
   background-color: #f8f9fa;
-  padding: 12px;
-  border-radius: 6px;
   line-height: 1.5;
   font-size: 14px;
+}
+
+.description-box :deep(.el-card__body) {
+  padding: 12px;
 }
 
 ul {
@@ -54,12 +56,5 @@ code {
 .home-btn {
   width: 100%;
   margin-top: 15px;
-  padding: 10px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
 }
 </style>

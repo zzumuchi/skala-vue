@@ -308,3 +308,100 @@ npm run build
 - 홈, 외출 준비 가이드, 도시 상세, Catch-all 경로 응답 확인
 - `npm run lint` 통과
 - `npm run build` 통과
+
+### Day 4 — 2026-08-27
+
+#### 학습 주제
+
+- Pinia Store의 State, Getter, Action
+- Exercise 5: Weather Store
+- Axios를 이용한 HTTP 비동기 통신
+- Element Plus UI Library
+- Vite Build와 Vercel Function 및 Production Deployment
+
+#### Exercise 5: Weather Store
+
+- `configStore.js`에서 날씨 단위 상태와 단위 기호, 단위 변경 Action 관리
+- `UnitToggler.vue`에서 전역 날씨 단위를 섭씨와 화씨로 전환
+- `WeatherCard.vue`에서 Store 상태를 구독하고 `computed()`로 표시 기온 계산
+- `WeatherDetailView.vue`에서도 동일한 단위 변환을 적용해 메인과 상세 화면의 단위 통일
+- 날씨 원본 데이터는 섭씨로 유지하고 화면 출력 시에만 화씨로 변환
+
+#### Exercise 6: Weather Axios
+
+- 기존 `WeatherHomeView.vue`의 Mock 배열과 조회 로직을 주석으로 보존하고 Axios 실시간 조회 로직 추가
+- 기존 `WeatherDetailView.vue`의 Mock 상세 조회를 주석으로 보존하고 동적 경로 기반 Axios 조회 로직 추가
+- 서울, 수원, 부산과 개인화 지역인 판교의 실시간 날씨 데이터 적용
+- 기존 검색, Router, Pinia 단위 변환, 추천 활동과 준비물 기능 유지
+- 중복된 Axios 전용 View를 기존 View에 병합하고 Router 연결 경로 유지
+- OpenWeatherMap API Key를 `VITE_OPENWEATHER_API_KEY` 환경변수로 분리
+- `.env.example`에 필요한 환경변수 이름과 예시 형식 기록
+
+#### Weather API 기능 확장
+
+- 상세 날씨 응답의 위도와 경도를 재사용해 OpenWeatherMap 5일 예보와 대기질 API 연동
+- 3시간 단위 예보를 도시 현지 날짜별로 묶어 5일간의 최저·최고기온과 최대 강수확률 계산
+- 각 날짜의 정오와 가장 가까운 예보를 대표 기상 상태로 표시
+- Pinia의 섭씨·화씨 설정을 5일 예보 카드에도 적용
+- OpenWeatherMap AQI 단계에 따라 좋음부터 매우 나쁨까지 상태와 야외 활동 안내 표시
+- 초미세먼지 PM2.5, 미세먼지 PM10, 오존 농도를 대기질 카드에 표시
+- `Promise.allSettled()`로 예보와 대기질 중 하나의 요청이 실패해도 다른 정보와 현재 날씨는 유지
+- 5열 예보 카드를 작은 화면에서 2열로 전환하고 대기오염 항목을 1열로 전환하는 반응형 UI 적용
+
+#### Element Plus 실습 오류 해결
+
+- `element-plus` 패키지를 프로젝트 의존성으로 설치
+- `main.js`에 Element Plus 플러그인과 기본 CSS를 전역 등록
+- 회원가입 성공 결과가 오류 메시지로 표시되던 호출을 성공 메시지로 수정
+- 다운로드 진행 중 상태를 먼저 검사한 뒤 로딩 상태를 활성화하도록 로직 확인
+- 공통 입력창 CSS에서 `.el-input__inner`를 제외해 Element Plus 입력창의 테두리가 중복되는 문제 해결
+
+#### Weather UI Library 적용
+
+- 공통 대시보드 영역과 현재 날씨, 5일 예보, 대기질 및 외출 가이드 카드에 Element Plus `el-card` 적용
+- 도시 검색창을 `el-input`으로 변경하고 기존 Props와 Emits 기반 검색어 동기화 유지
+- 날씨 상태와 AQI 등급을 `el-tag`로 표시해 상태별 색상 구분
+- 상세보기, 단위 변경, 홈 이동 버튼을 `el-button`으로 변경
+- 404 화면을 `el-result`로 구성하고 홈 이동 동작 유지
+- 일반 입력창 CSS가 Element Plus 내부 input에 중복 적용되지 않도록 선택자 범위 제한
+- `src/main.js`의 실행 대상을 `App_exercise.vue`로 전환
+- `el-card`가 생성하는 내부 래퍼에 목록 Grid를 적용해 날씨 카드를 한 줄에 하나씩 전체 너비로 표시
+
+#### Weather Deployment 품질관리
+
+- 단계별 실습 소스는 보존하고 `App_exercise.vue`의 최종 실행 화면은 하나의 Navigation과 `RouterView`로 통합
+- `/guide` 경로를 Catch-all보다 먼저 선언해 가이드 화면이 정상적으로 연결되도록 수정
+- `vercel.json`에 SPA Rewrite를 등록해 상세 주소 새로고침 시 `index.html`로 연결
+- `api/weather.js` Vercel Function을 추가하고 OpenWeather 현재 날씨, 5일 예보, 대기질 요청을 서버에서 대리 호출
+- production에서는 프런트엔드가 `/api/weather`만 호출하고 `OPENWEATHER_API_KEY`는 Vercel의 민감 환경변수로 관리
+- 로컬 개발에서는 기존 `.env.local`의 `VITE_OPENWEATHER_API_KEY`를 이용하도록 API Service에서 환경별 호출 경로 분리
+- Element Plus 전체 등록을 필요한 컴포넌트와 스타일의 선택 등록 방식으로 변경해 JavaScript Bundle 크기 경고 해결
+- 최초 Vercel 프로젝트 `skala-vue.weather`에서 배포를 검증한 뒤 최종 프로젝트명을 `skala-vue-p070`으로 변경
+- 최종 Vercel 프로젝트의 Production 및 Preview 환경에 `OPENWEATHER_API_KEY`를 Secret으로 등록
+- 기본 Vercel 도메인은 추후 프로젝트 설정에서 다른 도메인으로 변경할 수 있음을 확인
+
+#### 시행착오 및 해결 과정
+
+- 단위 변경 버튼의 문구는 바뀌었지만 메인과 상세 화면의 기온은 섭씨로 고정되어 있었다.
+  - `UnitToggler`와 Store는 정상 동작했지만 날씨 화면이 원본 기온과 `°C`를 직접 출력하고 있었다.
+  - 날씨 카드와 상세 View가 Store의 `unit`을 참조하는 Computed 값을 출력하도록 연결했다.
+- Axios 실습 파일과 새 View에 API Key가 직접 작성되어 있었다.
+  - 소스에 Key를 저장하지 않고 `.env.local`에서 환경변수로 읽도록 변경했다.
+
+#### 실행 및 검사 결과
+
+- `src/main.js`에서 `App_exercise.vue`를 실행 대상으로 설정
+- OpenWeatherMap 5일 예보 API 응답 상태 200과 40개 예보 시점 확인
+- OpenWeatherMap 대기질 API 응답 상태 200과 현재 대기질 데이터 확인
+- Vercel Function의 현재 날씨, 5일 예보, 대기질 응답 상태 200 확인
+- Production Bundle에서 OpenWeather API Key가 포함되지 않은 것을 확인
+- Element Plus 선택 등록 후 JavaScript Bundle을 약 1.07MB에서 약 247KB로 축소
+- Vercel Production 배포 완료: `https://skala-vueweather.vercel.app`
+- 배포 주소의 루트, 도시 상세 직접 접근, 외출 준비 가이드 응답 상태 200 확인
+- 요청한 `skala-vue.weather.vercel.app`은 `weather.vercel.app` 하위 도메인 소유 권한이 없어 별칭 등록이 제한됨
+- 대체 별칭 `skala-vue-weather.vercel.app`도 기존 사용자가 선점해 자동 할당 주소를 Production 주소로 유지
+- 최종 Vercel 프로젝트를 `skala-vue-p070`으로 새로 구성해 공개 Production 도메인 `https://skala-vue-p070.vercel.app` 적용
+- 최종 도메인의 루트, 도시 상세 직접 접근, 외출 준비 가이드, Weather Function 응답 상태 200 확인
+- GitHub 자동 배포 연결은 Vercel GitHub App의 저장소 접근 권한 부족으로 보류하고 CLI Production 배포로 완료
+- `npm run lint` 통과
+- `npm run build` 통과

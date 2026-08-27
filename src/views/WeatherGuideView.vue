@@ -29,7 +29,7 @@ const weatherGuides = [
     </header>
 
     <div class="guide-grid">
-      <article v-for="guide in weatherGuides" :key="guide.condition" class="guide-card">
+      <el-card v-for="guide in weatherGuides" :key="guide.condition" class="guide-card" shadow="hover">
         <h3>{{ guide.condition }}</h3>
         <p>{{ guide.description }}</p>
         <dl>
@@ -42,7 +42,7 @@ const weatherGuides = [
             <dd>{{ guide.preparation }}</dd>
           </div>
         </dl>
-      </article>
+      </el-card>
     </div>
 
     <RouterLink :to="{ name: 'WeatherHome' }" class="guide-home-link">대시보드 홈으로 이동</RouterLink>
@@ -72,11 +72,12 @@ const weatherGuides = [
 }
 
 .guide-card {
-  padding: 18px;
   background: #f8f9fa;
-  border: 1px solid #dfe5e8;
   border-top: 3px solid #42b883;
-  border-radius: 8px;
+}
+
+.guide-card :deep(.el-card__body) {
+  padding: 18px;
 }
 
 .guide-card h3 {
