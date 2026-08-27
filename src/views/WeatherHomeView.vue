@@ -5,7 +5,10 @@ import { useRouter, useRoute } from 'vue-router'
 import BaseDashboardCard from '@/components/exercise/3_Component/BaseDashboardCard.vue'
 import SearchBar from '@/components/exercise/3_Component/SearchBar.vue'
 import WeatherCard from '@/components/exercise/3_Component/WeatherCard.vue'
+import WeatherMap from '@/components/exercise/3_Component/WeatherMap.vue'
+import { weatherCities } from '@/data/weatherCities'
 import { fetchCurrentWeather, hasWeatherApiConfig } from '@/services/weatherApi'
+import { getWeatherRecommendation } from '@/utils/weatherRecommendation'
 
 const router = useRouter()
 const route = useRoute()
@@ -22,9 +25,10 @@ const weatherList = ref([])
 
 const searchQuery = ref('')
 const selectedCityInfo = ref('카드를 클릭하거나 검색해보세요.')
+const selectedCityId = ref('city_01')
 const isLoading = ref(false)
 
-// OpenWeatherMap에서 네 지역의 실시간 날씨를 가져온다.
+// OpenWeatherMap에서 주요 여섯 지역의 실시간 날씨를 가져온다.
 const fetchRealTimeWeather = async () => {
   if (!hasWeatherApiConfig()) {
     console.error('OpenWeatherMap API Key가 설정되지 않았습니다.')
@@ -34,47 +38,38 @@ const fetchRealTimeWeather = async () => {
   isLoading.value = true
 
   try {
-    const [seoulRes, suwonRes, busanRes, pangyoRes] = await Promise.all([
-      fetchCurrentWeather({ q: 'Seoul' }),
-      fetchCurrentWeather({ q: 'Suwon' }),
-      fetchCurrentWeather({ q: 'Busan' }),
-      fetchCurrentWeather({ lat: 37.3947, lon: 127.1112 }),
-    ])
+    const responses = await Promise.allSettled(weatherCities.map((city) => fetchCurrentWeather(city.params)))
 
-    weatherList.value = [
-      {
-        id: 'city_01',
-        name: '서울',
-        temp: seoulRes.data.main.temp,
-        status: seoulRes.data.weather[0].description,
-        activity: '한강 산책',
-        preparation: '선크림',
-      },
-      {
-        id: 'city_02',
-        name: '수원',
-        temp: suwonRes.data.main.temp,
-        status: suwonRes.data.weather[0].description,
-        activity: '실내 전시 관람',
-        preparation: '우산',
-      },
-      {
-        id: 'city_03',
-        name: '부산',
-        temp: busanRes.data.main.temp,
-        status: busanRes.data.weather[0].description,
-        activity: '해변 산책',
-        preparation: '얇은 겉옷',
-      },
-      {
-        id: 'city_04',
-        name: '판교',
-        temp: pangyoRes.data.main.temp,
-        status: pangyoRes.data.weather[0].description,
-        activity: '카페에서 코딩하기',
-        preparation: '노트북',
-      },
-    ]
+    weatherList.value = responses.flatMap((response, index) => {
+      const city = weatherCities[index]
+
+      if (response.status === 'rejected') {
+        console.error(`${city.name} 날씨 API 연동 실패:`, response.reason)
+        return []
+      }
+
+      const raw = response.value.data
+      const recommendation = getWeatherRecommendation({
+        temperature: raw.main.temp,
+        weatherId: raw.weather[0].id,
+        windSpeed: raw.wind.speed,
+      })
+
+      return [{
+        ...city,
+        temp: raw.main.temp,
+        status: raw.weather[0].description,
+        weatherId: raw.weather[0].id,
+        humidity: raw.main.humidity,
+        windSpeed: raw.wind.speed,
+        activity: recommendation.activities[0],
+        preparation: recommendation.outfit.join(', '),
+      }]
+    })
+
+    if (!weatherList.value.some((city) => city.id === selectedCityId.value)) {
+      selectedCityId.value = weatherList.value[0]?.id ?? ''
+    }
 
     console.log('실시간 날씨 데이터 동기화 완료:', weatherList.value)
   } catch (error) {
@@ -116,10 +111,18 @@ const filteredWeatherList = computed(() => {
 const handleDetailJump = (id) => {
   router.push(`/weather/${id}`)
 }
+
+const handleMapSelection = (id) => {
+  const city = weatherList.value.find((item) => item.id === id)
+  selectedCityId.value = id
+  selectedCityInfo.value = `${city?.name ?? '지역'}의 날씨 추천을 확인하고 있습니다.`
+}
 </script>
 
 <template>
   <div class="dashboard-wrapper">
+    <WeatherMap :cities="weatherList" :selected-city-id="selectedCityId" :is-loading="isLoading" @select-city="handleMapSelection" @view-detail="handleDetailJump" />
+
     <BaseDashboardCard>
       <SearchBar :current-query="searchQuery" @update-query="(val) => (searchQuery = val)" />
     </BaseDashboardCard>

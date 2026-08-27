@@ -2,7 +2,9 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useConfigStore } from '@/stores/configStore'
+import { weatherCityMap } from '@/data/weatherCities'
 import { fetchAirQuality, fetchCurrentWeather, fetchWeatherForecast, hasWeatherApiConfig } from '@/services/weatherApi'
+import { getWeatherRecommendation } from '@/utils/weatherRecommendation'
 
 const route = useRoute()
 const router = useRouter()
@@ -24,13 +26,6 @@ const isLoading = ref(false)
 const isAdditionalLoading = ref(false)
 const forecastError = ref('')
 const airQualityError = ref('')
-
-const cityMapping = {
-  city_01: { params: { q: 'Seoul' }, korean: '대한민국 서울특별시', activity: '한강 산책', preparation: '선크림' },
-  city_02: { params: { q: 'Suwon' }, korean: '경기도 수원시 영통구', activity: '실내 전시 관람', preparation: '우산' },
-  city_03: { params: { q: 'Busan' }, korean: '부산광역시 해운대구', activity: '해변 산책', preparation: '얇은 겉옷' },
-  city_04: { params: { lat: 37.3947, lon: 127.1112 }, korean: '경기도 성남시 판교', activity: '카페에서 코딩하기', preparation: '노트북' },
-}
 
 const aqiDetails = {
   1: { label: '좋음', message: '야외 활동하기 좋은 대기 상태입니다.' },
@@ -141,7 +136,7 @@ const fetchAdditionalWeather = async ({ lat, lon }) => {
 
 // 동적 경로에 해당하는 지역의 실시간 상세 날씨를 조회한다.
 onMounted(async () => {
-  const targetCity = cityMapping[route.params.cityId]
+  const targetCity = weatherCityMap[route.params.cityId]
 
   if (!targetCity || !hasWeatherApiConfig()) {
     if (!hasWeatherApiConfig()) {
@@ -156,14 +151,20 @@ onMounted(async () => {
     const response = await fetchCurrentWeather(targetCity.params)
 
     const raw = response.data
+    const recommendation = getWeatherRecommendation({
+      temperature: raw.main.temp,
+      weatherId: raw.weather[0].id,
+      windSpeed: raw.wind.speed,
+    })
     cityData.value = {
-      name: targetCity.korean,
+      name: targetCity.fullName,
       temp: raw.main.temp,
       status: raw.weather[0].description,
       humidity: `${raw.main.humidity}%`,
       wind: `${raw.wind.speed}m/s`,
-      activity: targetCity.activity,
-      preparation: targetCity.preparation,
+      activity: recommendation.activities.join(', '),
+      preparation: recommendation.outfit.join(', '),
+      tip: recommendation.tip,
     }
 
     isLoading.value = false
@@ -207,7 +208,8 @@ const displayTemp = computed(() => {
         <p>대기 습도: {{ cityData.humidity }}</p>
         <p>현재 풍속: {{ cityData.wind }}</p>
         <p>추천 활동: {{ cityData.activity }}</p>
-        <p>준비물: {{ cityData.preparation }}</p>
+        <p>추천 옷차림: {{ cityData.preparation }}</p>
+        <p>외출 팁: {{ cityData.tip }}</p>
       </el-card>
       <div v-else>
         <p>해당 지역의 상세 데이터가 존재하지 않거나 API 호출에 실패했습니다.</p>

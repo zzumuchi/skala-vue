@@ -1,6 +1,6 @@
 # SKALA Vue.js Weather Application
 
-SKALA 4기 Vue.js 종합 실습에서 기본 문법부터 Composition API, Component, Vue Router, Pinia, Axios, Element Plus와 Vercel 배포까지 단계적으로 구현한 프로젝트입니다. 학습 단계별 코드는 보존하면서 최종적으로 실시간 날씨, 5일 예보와 대기질을 확인할 수 있는 Weather Application으로 확장했습니다.
+SKALA 4기 Vue.js 종합 실습에서 기본 문법부터 Composition API, Component, Vue Router, Pinia, Axios, Element Plus와 Vercel 배포까지 단계적으로 구현한 프로젝트입니다. 학습 단계별 코드는 보존하면서 최종적으로 지역 지도에서 실시간 날씨를 탐색하고, 날씨에 맞는 활동과 옷차림부터 5일 예보와 대기질까지 확인할 수 있는 Weather Life Guide로 확장했습니다.
 
 ## 요약
 
@@ -14,53 +14,33 @@ SKALA 4기 Vue.js 종합 실습에서 기본 문법부터 Composition API, Compo
 
 ## 프로젝트 목표
 
-- Vue의 반응성, Directive와 이벤트 처리 등 기본 문법을 실제 화면에서 활용합니다.
-- Component를 역할별로 분리하고 Props, Emits와 Slot을 이용해 데이터를 전달합니다.
-- Vue Router와 Pinia를 결합해 화면 이동과 전역 상태를 함께 관리합니다.
-- Axios와 OpenWeather API를 연결해 Mock Data를 실시간 데이터로 확장합니다.
-- Element Plus와 반응형 CSS를 활용해 일관된 사용자 인터페이스를 구성합니다.
-- Vercel Function으로 API Key를 서버에서 관리하고 production 환경에 안전하게 배포합니다.
+Vue.js의 기본 문법과 확장 기능을 활용해 지역별 실시간 날씨를 확인하고 외출 활동과 옷차림을 추천하는 웹 애플리케이션을 구현합니다.
 
 ## 주요 기능
 
-### 실시간 날씨 대시보드
+### 지역별 날씨 확인
 
-- 서울, 수원, 부산과 개인화 지역인 판교의 현재 기온과 기상 상태를 동시에 조회합니다.
-- 검색어를 기준으로 도시 카드를 필터링하고 Query String에 검색 상태를 보존합니다.
-- 날씨 카드를 선택하면 선택된 도시 상태를 안내하고 상세 화면으로 이동할 수 있습니다.
-- 데스크톱과 모바일에서 날씨 카드가 전체 너비를 활용하도록 반응형으로 구성했습니다.
+- 서울, 판교, 수원, 강릉, 부산, 제주 실시간 날씨 조회
+- 지도 지점 선택과 도시명 검색 지원
+- 섭씨·화씨 단위 변경 및 검색 상태 유지
 
-### 도시별 상세 날씨
+### 외출 활동과 옷차림 추천
 
-- `/weather/:cityId` 동적 경로를 이용해 선택한 도시의 상세 화면을 제공합니다.
-- 실시간 기온, 기상 상태, 습도, 풍속, 추천 활동과 준비물을 표시합니다.
-- OpenWeather의 3시간 단위 예보를 현지 날짜별로 묶어 5일간의 최저·최고기온과 최대 강수확률을 계산합니다.
-- 현재 AQI 등급과 PM2.5, PM10, 오존 농도를 카드 형태로 제공합니다.
-- 예보와 대기질 요청을 `Promise.allSettled()`로 처리해 하나의 요청이 실패해도 나머지 정보를 유지합니다.
+- 기온과 기상 상태에 맞는 지역별 활동 추천
+- 비, 눈, 폭염, 한파와 강풍을 고려한 옷차림 안내
+- 선택한 지역의 습도, 풍속과 외출 팁 제공
 
-### 전역 단위 설정
+### 상세 기상 정보
 
-- Pinia Store에서 섭씨와 화씨 상태, 단위 기호와 변경 Action을 관리합니다.
-- 대시보드 카드와 상세·예보 화면이 동일한 Store를 구독해 단위를 즉시 변경합니다.
-- API 원본 데이터는 섭씨로 유지하고 표시 단계에서만 화씨로 변환합니다.
-
-### Router와 보조 화면
-
-- 날씨 대시보드, 외출 준비 가이드, 서비스 소개와 404 화면을 분리했습니다.
-- `/guide`에서 날씨 상태별 추천 활동과 준비물을 확인할 수 있습니다.
-- Catch-all Route로 정의되지 않은 주소를 처리합니다.
-- `vercel.json`의 SPA Rewrite로 상세 주소에서 새로고침해도 정상적으로 앱이 열립니다.
-
-### UI Library
-
-- Element Plus의 Card, Input, Tag, Button과 Result Component를 적용했습니다.
-- 필요한 Component와 Style만 선택 등록해 JavaScript Bundle을 약 1.07MB에서 약 247KB로 줄였습니다.
-- 공통 CSS가 Element Plus 내부 input에 중복 적용되던 문제를 선택자 범위 조정으로 해결했습니다.
+- 지역별 현재 날씨와 5일 예보 제공
+- 강수확률과 최저·최고기온 표시
+- AQI 등급과 미세먼지·오존 정보 제공
 
 ## 개인화 및 추가 구현
 
-- 기본 지역 외에 판교를 추가하고 `카페에서 코딩하기`, `노트북`이라는 개인화된 활동과 준비물을 유지했습니다.
+- 기본 지역 외에 판교를 유지하고 강릉과 제주를 추가해 수도권·동해·남해·제주 날씨를 함께 비교할 수 있게 했습니다.
 - 기온만 보여주는 기본 과제에서 5일 예보, 강수확률과 대기질 정보까지 확장했습니다.
+- 주요 지역을 직접 선택하는 날씨 지도를 만들고 정적인 준비물 문구를 실시간 옷차림·활동 추천으로 확장했습니다.
 - AQI 단계에 따라 야외 활동 가능 여부와 마스크 준비 안내를 제공합니다.
 - 외출 준비 가이드를 별도 View로 만들어 날씨 정보를 실제 행동과 연결했습니다.
 - 로딩, API 오류, 검색 결과 없음과 존재하지 않는 경로에 대한 상태 UI를 구현했습니다.
@@ -104,12 +84,16 @@ skala-vue/
 │   │   └── exercise/
 │   │       ├── 1_Mockup/          # Weather Mockup
 │   │       ├── 2_Composition/     # Composition API Weather
-│   │       ├── 3_Component/       # 분리된 Weather Component
+│   │       ├── 3_Component/       # Weather 카드와 지역 지도 Component
 │   │       └── 4_WeatherStore/    # Pinia 단위 변경 Component
+│   ├── data/
+│   │   └── weatherCities.js        # 지역 좌표와 지도 지점 설정
 │   ├── services/
 │   │   └── weatherApi.js          # 개발·배포 환경별 날씨 요청 Service
 │   ├── stores/
 │   │   └── configStore.js         # 섭씨·화씨 전역 상태
+│   ├── utils/
+│   │   └── weatherRecommendation.js # 날씨별 활동·옷차림 추천 규칙
 │   ├── router/
 │   │   └── index.js               # Weather Route 정의
 │   ├── views/                      # Home, Detail, Guide, About, 404 View
@@ -187,7 +171,7 @@ Vercel CLI를 이용해 Production으로 배포했습니다. GitHub Push 기반 
 | Day 1 | JavaScript 복습, Vue 반응성, 보간법과 Directive |
 | Day 2 | Event·Form·Style Handling, Weather Mockup과 Composition API 확장 |
 | Day 3 | Component, Props·Emits·Slot, Router와 외출 준비 가이드 |
-| Day 4 | Pinia Store, Axios, Element Plus, 5일 예보·대기질, 품질관리와 Vercel 배포 |
+| Day 4 | Pinia Store, Axios, Element Plus, 5일 예보·대기질, 지역 날씨 지도·라이프 추천, 품질관리와 Vercel 배포 |
 
 상세 학습 과정, 개인화 내역과 시행착오는 [RECORD.md](./RECORD.md)에 날짜별로 기록했습니다. GitHub의 일차별 커밋은 [GitHub Activity](https://github.com/zzumuchi/skala-vue/activity)에서 확인할 수 있습니다.
 
